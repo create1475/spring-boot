@@ -1,13 +1,14 @@
 package com.spring.pro27.member.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
-import com.spring.pro27.member.vo.*;
+import com.spring.pro27.member.vo.MemberVO;
 
 @Repository("memberDAO")
 
@@ -32,5 +33,21 @@ public class MemberDAOImpl implements MemberDAO {
 	public int deleteMember(String id) throws DataAccessException{
 		int result = sqlSession.delete("mapper.member.deleteMember",id);
 		return result;
+	}
+	@Override
+	public MemberVO loginById(MemberVO memberVO) throws DataAccessException{
+		MemberVO vo = sqlSession.selectOne("mapper.member.loginById",memberVO);
+		return vo;
+	}
+	@Override
+	public int insertNewArticle(Map articleMap) throws DataAccessException{
+		int articleNO = selectNewArticleNO();
+		articleMap.put("articleNO",articleNO);
+		sqlSession.insert("mapper.board.insertNewArticle",articleMap);
+		return articleNO;
+		
+	}
+	private int selectNewArticleNO() throws DataAccessException{
+		return sqlSession.selectOne("mapper.board.selectNewArticleNO");
 	}
 }

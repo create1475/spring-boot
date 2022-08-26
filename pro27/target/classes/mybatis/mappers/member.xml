@@ -78,6 +78,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			id=#{id}
 		]]>
 	</delete>
+	<select id="loginById" resultType="memberVO" parameterType="memberVO">
+	<![CDATA[
+		select * from t_member
+		where id=#{id} and pwd=#{pwd}
+	]]>
+	</select>
 	<select id="searchMember" resultMap="memResult" parameterType="memberVO">
 		<![CDATA[
 			select * from t_member
